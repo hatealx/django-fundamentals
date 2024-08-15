@@ -1,3 +1,9 @@
 {% include 'base.html' %}
 <h2>This is the index page</h2>
-{{name}}
+
+{%if name == "Taskly"%}
+
+    <p>welcome taksly</p>
+{%else%}
+    <p>Wrong person</p>
+{%endif%}
