@@ -3,13 +3,20 @@ from django.http import HttpResponse
 
 
 # Create your views here.
-def register(request):
-   return HttpResponse("This is the registration  page")	
-
-
-def my_login(request):
-   return HttpResponse("This is the login page")
 
 
 def home(request):
-    return render(request, 'index.html')
+    context = {
+        'name': 'Taskly',
+    }
+
+    return render(request, 'index.html', context=context)
+
+def register(request):
+   return render(request, 'register.html')
+
+
+def my_login(request):
+   return render(request, 'login.html')
+
+
