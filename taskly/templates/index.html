@@ -1,9 +1,14 @@
 {% include 'base.html' %}
 <h2>This is the index page</h2>
 
-{%if name == "Taskly"%}
+{%for cl in client%}
 
-    <p>welcome taksly</p>
-{%else%}
-    <p>Wrong person</p>
-{%endif%}
+    <p>{{cl.id}}</p>
+    <br>
+
+    <p>{{cl.name}}</p>
+    <br>
+
+    <p>{{cl.profession}}</p>
+    <br>
+{%endfor%}
