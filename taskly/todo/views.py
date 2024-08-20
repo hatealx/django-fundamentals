@@ -8,7 +8,7 @@ from .forms import TaskForm
 
 
 def home(request):    
-    return render(request, 'index.html', context = context)
+    return render(request, 'index.html')
 
 
 
@@ -32,10 +32,33 @@ def createTask(request):
    context =  {'form': form}
    return render(request, 'task_form.html', context = context)
 
-
-
 def ViewTasks(request):
    tasks = Task.objects.all()
    context = {'tasks' : tasks}
 
    return render(request, 'view_tasks.html', context=context)
+
+
+def updateTasks(request, pk):
+   task = Task.objects.get(id=pk)
+   form =  TaskForm(instance=task)
+   if request.method == 'POST':
+      form =  TaskForm(request.POST, instance=task)
+      if form.is_valid():
+         form.save()
+         return redirect('view-task')
+   
+   context =  {'form': form}
+
+
+   return render(request, 'update.html',context=context )
+
+
+def deleteTasks(request, pk):
+   task = Task.objects.get(id=pk)
+   if request.method == 'POST':
+      task.delete()
+      return redirect('view-task')
+   
+   context =  {'object': task}
+   return render(request, 'delete.html', context=context)
