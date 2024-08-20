@@ -1,14 +1,7 @@
 {% include 'base.html' %}
 <h2>This is the index page</h2>
 
-{%for cl in client%}
 
-    <p>{{cl.id}}</p>
-    <br>
-
-    <p>{{cl.name}}</p>
-    <br>
-
-    <p>{{cl.profession}}</p>
-    <br>
-{%endfor%}
+<p>{{task.id}}</p>
+<p>{{task.title}}</p>
+<p>{{task.content}}</p>
