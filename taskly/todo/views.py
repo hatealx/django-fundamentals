@@ -4,6 +4,8 @@ from .models import Task
 from .forms import TaskForm, CreateUserForm, LoginForm
 from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 
@@ -83,6 +85,6 @@ def register(request):
          return HttpResponse('the user was registered')
    context = {'form': form}
    return render(request, 'register.html',context=context)
-
+@login_required(login_url='my-login')
 def dashboard(request):
    return render(request, 'dashboard.html')
