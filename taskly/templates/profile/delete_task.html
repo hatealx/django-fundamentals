@@ -12,14 +12,15 @@
 <body>
     <br>
     <div class="container bg-white shadow-mid p-6 form-layout " style="width: 500px;">
-        <h2>This the register page</h2>
-        
-            <form method="post">
-                {%csrf_token%}
+        <h2>delete a  Task</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <p>Are you sure you want to delete that task</p>
+            <button type="submit" class="btn btn-primary navbar-btn">Submit</button>
+            <a href="{% url 'view_task'%}">Go Back</a>
 
-                {{form|crispy}}
-                <button type="submit" class="btn btn-primary navbar-btn" >Register</button>
-            </form>
+        </form>
+           
     </div>
     
 </body>
