@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
-from .forms import CreateUserForm, LoginForm, CreateTaskForm
+from .forms import CreateUserForm, LoginForm, CreateTaskForm, UpdateUserForm
 from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from . models import Task
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -23,7 +24,7 @@ def register(request):
       form = CreateUserForm(request.POST)
       if form.is_valid:
          form.save()
-         return HttpResponse('the user was registered')
+         return redirect('my-login') 
    context = {'form': form}
    return render(request, 'register.html',context=context)
 
@@ -106,3 +107,32 @@ def deleteTask(request, pk):
       return redirect('view_task')
  
    return render(request, 'profile/delete_task.html')
+
+
+
+
+@login_required(login_url='my-login')
+def profileManagement(request):
+   if request.method == 'POST':
+      form =  UpdateUserForm(request.POST, instance=request.user)
+      if form.is_valid():
+         form.save()
+         return redirect('dashboard')
+
+   user_form  = UpdateUserForm(instance=request.user)
+   
+
+   context =  {'form': user_form}
+
+   return render(request, 'profile/profile_management.html',context=context)
+
+
+@login_required(login_url='my-login')
+def deleteAccount(request):
+   if request.method == 'POST':
+      deleteUser = User.objects.get(username=request.user)
+      deleteUser.delete()
+      return redirect('')
+   return render(request, 'profile/delete_account.html')
+
+
