@@ -1,12 +1,13 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Post
-from django.http import Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
 from .forms import EmailPostForm, CommentForm
 from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
 from taggit.models import Tag
+from django.db.models import Count
+
 
 
 
@@ -101,13 +102,23 @@ def post_detail(request,year, month, day, post):
      publish__year=year,
     publish__month=month,
     publish__day=day
-
     )
+
     # List of active comments for this post
     comments = post.comments.filter(active=True)
     # Form for users to comment
     form = CommentForm()
-    
+
+
+    # List of similar posts
+    post_tags_ids = post.tags.values_list('id', flat=True)
+    print(post_tags_ids)
+
+    similar_posts = Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
+
+    similar_posts = similar_posts.annotate(same_tags=Count('tags')).order_by('-same_tags', '-publish')[:4]
+    print(similar_posts)
+        
 
 
     return render(
@@ -115,7 +126,9 @@ def post_detail(request,year, month, day, post):
     'blog/post/detail.html',
     {'post': post,
     'comments': comments,
-    'form': form}
+    'form': form,
+    'similar_posts': similar_posts
+    }
     )
 
 
