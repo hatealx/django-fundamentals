@@ -1,4 +1,5 @@
 from django.db import models
+from taggit.managers import TaggableManager
 
 # Create your models here.
 
@@ -60,6 +61,8 @@ class Post(models.Model):
             self.slug
             ]
         )
+    tags = TaggableManager()
+
 
 
 
@@ -70,7 +73,7 @@ class Comment(models.Model):
     on_delete=models.CASCADE,
     related_name='comments'
     )
-    
+
     name = models.CharField(max_length=80)
     email = models.EmailField()
     body = models.TextField()
