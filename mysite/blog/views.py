@@ -11,6 +11,7 @@ from django.db.models import Count
 
 
 
+
 class PostListView(ListView):
     """
     Alternative post list view
